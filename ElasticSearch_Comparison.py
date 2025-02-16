@@ -6,7 +6,7 @@ from scipy.spatial.distance import cosine
 # Initialize Elasticsearch client
 es = Elasticsearch(
     "https://my-elasticsearch-project-faf96a.es.us-east-1.aws.elastic.cloud",
-    api_key="RktTVkRaVUJDQXI2cXdPTlZSOVI6YmtwZThzNEh4aU1CeGxUQmRQRGN3Zw=="
+    api_key="testing=="
 )
 
 # Initialize sentence transformer model
