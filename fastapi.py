@@ -6,6 +6,7 @@ import dotenv
 from sentence_transformers import SentenceTransformer
 from groq import Groq
 from . ElasticSearch_Comparison import check_information_sufficiency
+import requests
 
 dotenv.load_dotenv()
 
@@ -54,3 +55,24 @@ def search(q: str):
     print("Getting information from Perplexity API.")
     return read_root(q)["content"]
     
+@app.get("/recommendations")
+def get_relevant_links(prompt: str):
+    headers = {
+        "Authorization": f"Bearer {os.getenv("PERPLEXITY_API_KEY")}",
+        "Content-Type": "application/json"
+    }
+    data = {
+        "model": "llama-3.1-sonar-small-128k-online",
+        "messages": [
+            {"role": "system", "content": "You are to only provide links related and relevant to the prompt. Format each link as a python string with double quotes at the beginning and end of each string. Put each url in a new line. No other unnecessary words or characters are allowed"},
+            {"role": "user", "content": f"Provide 3-5 relevant and trustworthy links for: {prompt} and Don't use any other characters besides what is necessary."}
+        ]
+    }
+    try:
+        response = requests.post("https://api.perplexity.ai/chat/completions", headers=headers, json=data)
+        response.raise_for_status()
+        result = response.json()
+        links = result['choices'][0]['message']['content'].split('\n')
+        return [link.strip() for link in links if link.strip()]
+    except requests.exceptions.RequestException as e:
+        return []
