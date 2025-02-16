@@ -5,7 +5,7 @@ from sentence_transformers import SentenceTransformer
 
 es = Elasticsearch(
     "https://my-elasticsearch-project-ba94ad.es.us-west-2.aws.elastic.cloud:443",
-    api_key="OGVKUERaVUJLUXNjeGk0a2k3YkQ6bWQ1Uk5QRlU4TWs0TFZMSGc0WEd4Zw==",
+    api_key="hidden",
     timeout=20,  # Increase timeout to 30 seconds
     max_retries=3,
     retry_on_timeout=True
