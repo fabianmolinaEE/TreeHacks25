@@ -59,23 +59,23 @@ def check_information_sufficiency(prompt, threshold=0.5):
         # Determine if the max similarity meets the threshold
         print(max_similarity)
         if max_similarity >= threshold:
-            return True, [most_similar_doc]
+            return True, [most_similar_doc], hit["_source"]["content"]
         else:
-            return False, []
+            return False, [], ""
 
     except Exception as e:
         print(f"Error during Elasticsearch query: {e}")
         return False, []
 
-# Example usage
-prompt = ["I am taking CS111 at Stanford. Could you summarize lecture 10?", "I want a hamburger", "I want to take CS111", "Could you do lecture 10", "I want to understand lecture 10 of CS111 at Stanford better.", "I am taking CS111 at Stanford. Can you summarize the syllabus", "What are the office hours for the proffessor who teaches CS111 Stanford"]
-for pr in prompt:
-    has_sufficient_info, relevant_docs = check_information_sufficiency(pr)
+# # Example usage
+# prompt = ["I am taking CS111 at Stanford. Could you summarize lecture 10?", "I want a hamburger", "I want to take CS111", "Could you do lecture 10", "I want to understand lecture 10 of CS111 at Stanford better.", "I am taking CS111 at Stanford. Can you summarize the syllabus", "What are the office hours for the proffessor who teaches CS111 Stanford"]
+# for pr in prompt:
+#     has_sufficient_info, relevant_docs, content = check_information_sufficiency(pr)
 
-    if has_sufficient_info:
-        print("We have sufficient information to answer this prompt.")
-        for doc in relevant_docs:
-            print(f"Document ID: {doc['_id']}, Score: {doc['_score']}")
-    else:
-        print("We don't have enough information. Let's scrape the web or use an external API.")
+#     if has_sufficient_info:
+#         print("We have sufficient information to answer this prompt.")
+#         for doc in relevant_docs:
+#             print(f"Document ID: {doc['_id']}, Score: {doc['_score']}")
+#     else:
+#         print("We don't have enough information. Let's scrape the web or use an external API.")
 
