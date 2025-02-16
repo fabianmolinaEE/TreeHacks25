@@ -6,7 +6,7 @@ import re
 import ocr
 
 # Initialize the OpenAI client with Perplexity API
-client = OpenAI(api_key="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", base_url="https://api.perplexity.ai")
+client = OpenAI(api_key=os.getenv("OPEN_AI_KEY"), base_url="https://api.perplexity.ai")
 
 def get_perplexity_response(prompt):
     i = 0
