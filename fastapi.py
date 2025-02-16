@@ -4,6 +4,7 @@ from elasticsearch import Elasticsearch
 import os
 import dotenv
 from sentence_transformers import SentenceTransformer
+from groq import Groq
 from . ElasticSearch_Comparison import check_information_sufficiency
 
 dotenv.load_dotenv()
@@ -33,6 +34,19 @@ def read_root(q: str):
 
 @app.get("/content")
 def search(q: str):
+    client = Groq(
+        api_key=os.getenv("GROQ_API_KEY"),
+    )
+    chat_response = client.chat.completions.create(
+        messages=[{
+        "role": "user",
+        "content": f"For the following question, reply with a 'Yes' if you need specific information to answer the question, otherwise, reply with a 'No'.\n\n{q}"
+    }],
+        model="llama-3.3-70b-versatile"
+    )
+    response = chat_response.choices[0].message.content
+    if "No" in response:
+        return ""
     has_sufficient_info, relevant_doc = check_information_sufficiency(q)
     if has_sufficient_info:
         print("Sufficient information found.")
