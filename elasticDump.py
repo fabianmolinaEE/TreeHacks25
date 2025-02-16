@@ -5,25 +5,33 @@ from sentence_transformers import SentenceTransformer
 
 es = Elasticsearch(
     "https://my-elasticsearch-project-ba94ad.es.us-west-2.aws.elastic.cloud:443",
-    api_key="OGVKUERaVUJLUXNjeGk0a2k3YkQ6bWQ1Uk5QRlU4TWs0TFZMSGc0WEd4Zw=="
+    api_key="OGVKUERaVUJLUXNjeGk0a2k3YkQ6bWQ1Uk5QRlU4TWs0TFZMSGc0WEd4Zw==",
+    timeout=20,  # Increase timeout to 30 seconds
+    max_retries=3,
+    retry_on_timeout=True
 )
 # Initialize sentence transformer model
 model = SentenceTransformer('all-MiniLM-L6-v2')
 
-def process_and_index_content(data):
+def process_and_index_content(data, Uprompt):
     link = data['link']
     content_type = data['type']
+    query = Uprompt
     content = data['content']
 
     # Generate vector embedding
     content_vector = model.encode(content).tolist()
+    prompt_vector = model.encode(query).tolist()
 
     # Prepare document for indexing
     doc = {
         'link': link,
         'type': content_type,
+        'prompt': Uprompt,
+        'prompt_vector': prompt_vector,
         'content': content,
         'content_vector': content_vector
+         
     }
 
     # Index the document
@@ -38,4 +46,4 @@ scraped_data ={
 }
 
 
-process_and_index_content(scraped_data)
+process_and_index_content(scraped_data, "I am in a course CS111 at Stanford. I am confused on lecture 10")
