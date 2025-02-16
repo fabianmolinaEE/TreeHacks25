@@ -4,7 +4,7 @@ from sentence_transformers import SentenceTransformer
 # Initialize Elasticsearch client
 
 es = Elasticsearch(
-    "https://my-elasticsearch-project-ba94ad.es.us-west-2.aws.elastic.cloud:443",
+    "https://myhidden",
     api_key="hidden",
     timeout=20,  # Increase timeout to 30 seconds
     max_retries=3,
