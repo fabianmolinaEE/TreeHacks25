@@ -3,6 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 import json
 import re
+import ocr
 
 # Initialize the OpenAI client with Perplexity API
 client = OpenAI(api_key="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", base_url="https://api.perplexity.ai")
@@ -54,7 +55,8 @@ def check_link_content(link):
     content_type = response.headers.get("Content-Type", "").lower()
 
     if "application/pdf" in content_type:
-        return {"link": link, "type": "pdf", "content":"No content/PDF"}
+        text = ocr.read_pdf(link)
+        return {"link": link, "type": "pdf", "content": text}
     
     elif "text/html" in content_type:
         soup = BeautifulSoup(response.content, "html.parser")
