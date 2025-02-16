@@ -15,7 +15,7 @@ model = SentenceTransformer('all-MiniLM-L6-v2')
 def cosine_similarity(vec1, vec2):
     return 1 - cosine(vec1, vec2)
 
-def check_information_sufficiency(prompt, threshold=0.5):
+def check_information_sufficiency(prompt, threshold=0.65):
     # Encode the prompt into an embedding vector
     prompt_embedding = model.encode(prompt)
     # Elasticsearch query using script_score for content_vector similarity
@@ -59,9 +59,9 @@ def check_information_sufficiency(prompt, threshold=0.5):
         # Determine if the max similarity meets the threshold
         print(max_similarity)
         if max_similarity >= threshold:
-            return True, [most_similar_doc], hit["_source"]["content"]
+            return True, most_similar_doc
         else:
-            return False, [], ""
+            return False, None
 
     except Exception as e:
         print(f"Error during Elasticsearch query: {e}")

@@ -33,8 +33,10 @@ def read_root(q: str):
 
 @app.get("/content")
 def search(q: str):
-    has_sufficient_info, relevant_docs, content = check_information_sufficiency(q)
+    has_sufficient_info, relevant_doc = check_information_sufficiency(q)
     if has_sufficient_info:
-        return relevant_docs[0]["_source"]["content"]
-    return read_root(q)
+        print("Sufficient information found.")
+        return relevant_doc["_source"]["content"]
+    print("Getting information from Perplexity API.")
+    return read_root(q)["content"]
     
