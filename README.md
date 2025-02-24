@@ -1,5 +1,6 @@
 # TreeHacks25
 Repo for treehacks 2025. Fabian, Efrain, Amesha, Suprad
+
 Demo Video: https://www.youtube.com/watch?v=ica8KIuQ_S4 
 
 🧠 Study Smarter, Not Harder
